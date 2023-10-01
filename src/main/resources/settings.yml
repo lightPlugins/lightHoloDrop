@@ -14,3 +14,20 @@ mysql:
     prepStmtCacheSqlLimit: 2048
     cachePrepStmts: true
     useServerPrepStmts: true
+settings:
+  onServerJoin:
+    commands:
+      enable: true
+      list:
+#         command;executedAs;delayInTicks
+        - 'ecoitems give #player-name# beginner_axe;console;20'
+        - 'ecoitems give #player-name# beginner_pickaxe;console;20'
+        - 'ecoitems give #player-name# beginner_shovel;console;20'
+        - 'ecoitems give #player-name# beginner_sword;console;20'
+        - 'ecoarmor give #player-name# set:beginner;console;20'
+    message:
+      enable: true
+      test:
+        - ''
+        - ' Das ist ein toller Server'
+        - ''

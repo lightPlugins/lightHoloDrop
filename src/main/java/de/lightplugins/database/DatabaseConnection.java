@@ -2,14 +2,14 @@ package de.lightplugins.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import de.lightplugins.master.Main;
+import de.lightplugins.master.Ashura;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class DatabaseConnection {
 
     public void connectToDataBaseViaMariaDB() {
 
-        FileConfiguration config = Main.settings.getConfig();
+        FileConfiguration config = Ashura.settings.getConfig();
 
         String host = config.getString("mysql.host");
         String port = config.getString("mysql.port");
@@ -39,7 +39,7 @@ public class DatabaseConnection {
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", prepStmtCacheSize);
         hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", prepStmtCacheSqlLimit);
 
-        Main.getInstance.ds = new HikariDataSource(hikariConfig);
+        Ashura.getInstance.ds = new HikariDataSource(hikariConfig);
 
 
     }

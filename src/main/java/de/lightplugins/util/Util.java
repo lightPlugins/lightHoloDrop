@@ -1,24 +1,25 @@
 package de.lightplugins.util;
 
 import de.lightplugins.enums.MessagePath;
-import de.lightplugins.master.Main;
+import de.lightplugins.master.Ashura;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Random;
 
 public class Util {
 
     public void sendMessage(Player player, String message) {
         String prefix = MessagePath.Prefix.getPath();
-        player.sendMessage(Main.colorTranslation.hexTranslation(prefix + message));
+        player.sendMessage(Ashura.colorTranslation.hexTranslation(prefix + message));
     }
     /*  Send a message List to player without Prefix  */
 
     public void sendMessageList(Player player, List<String> list) {
         for(String s : list) {
-            player.sendMessage(Main.colorTranslation.hexTranslation(s));
+            player.sendMessage(Ashura.colorTranslation.hexTranslation(s));
         }
     }
 
@@ -45,5 +46,18 @@ public class Util {
 
     private String formatDouble(double numberToFormat) {
         return String.format("%,.2f", numberToFormat);
+    }
+
+    public boolean isInventoryFull(Player p) { return p.getInventory().firstEmpty() == -1; }
+
+    public boolean calculateProbability(double desiredProbability) {
+        if (desiredProbability < 0.0 || desiredProbability > 100.0) {
+            throw new IllegalArgumentException("Probability must be between 0 and 100.");
+        }
+
+        Random random = new Random();
+        double randomValue = random.nextDouble() * 100.0; // Zufallszahl zwischen 0 und 100
+
+        return randomValue < desiredProbability;
     }
 }

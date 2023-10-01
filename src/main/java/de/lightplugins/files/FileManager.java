@@ -1,6 +1,6 @@
 package de.lightplugins.files;
 
-import de.lightplugins.master.Main;
+import de.lightplugins.master.Ashura;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -19,12 +19,12 @@ public class FileManager {
      */
 
 
-    private final Main plugin;
+    private final Ashura plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
     private final String configName;
 
-    public FileManager(Main plugin, String configName) {
+    public FileManager(Ashura plugin, String configName) {
         this.plugin = plugin;
         this.configName = configName;
         saveDefaultConfig(configName);

@@ -3,15 +3,11 @@ author: lightPlugins
 description: Plugin exclusive for ASHURAMC
 website: ashuramc.de
 version: 1.0.0
-main: de.lightplugins.master.Main
+main: de.lightplugins.master.Ashura
 api-version: 1.20
 depend: [Vault]
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, EcoItems]
 loadbefore: [Essentials]
 commands: {
-  ashura:
-    description: main command for the plugin inclusive their aliases
-    aliases:
-      - as
-      - a
+  a:
 }

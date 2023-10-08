@@ -31,3 +31,13 @@ settings:
         - ''
         - ' Das ist ein toller Server'
         - ''
+  worldGuard:
+    # Generiert nach erfolgreichem Welten laden folgende Flags
+    generateWorldGuardFlagsOnInit:
+      worlds:
+        [0]:
+          world: 'NaturGrotte_'
+          craftingTableUse: deny
+          passthrough: deny
+          use: allow
+          chestAccess: allow

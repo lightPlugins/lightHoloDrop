@@ -36,7 +36,10 @@ public class BoxesOpener implements Listener {
 
 
             ItemMeta im = is.getItemMeta();
-            assert im != null;
+
+            if(im == null) {
+                return;
+            }
 
             PersistentDataContainer data = im.getPersistentDataContainer();
             NamespacedKey key = new NamespacedKey(Ashura.getInstance, PersistentDataPaths.ashuraBoxID.getType());

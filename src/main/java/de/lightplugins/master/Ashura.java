@@ -1,15 +1,18 @@
 package de.lightplugins.master;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.zaxxer.hikari.HikariDataSource;
 import de.lightplugins.commands.AshuraCommandManager;
+import de.lightplugins.commands.essentials.*;
 import de.lightplugins.database.DatabaseConnection;
 import de.lightplugins.events.BoxesOpener;
+import de.lightplugins.events.WorldInit;
 import de.lightplugins.events.OnFirstJoin;
-import de.lightplugins.events.OnJoinCommands;
 import de.lightplugins.files.FileManager;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.Util;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,6 +32,8 @@ public class Ashura extends JavaPlugin {
 
     public static ColorTranslation colorTranslation;
     public static Util util;
+    public Boolean isWorldGuard = false;
+
 
 
     public void onLoad() {
@@ -54,13 +59,36 @@ public class Ashura extends JavaPlugin {
         this.hikari = new DatabaseConnection();
         // hikari.connectToDataBaseViaMariaDB();
 
+
+        /*  SetUp WorldGuard */
+
+        for(Plugin pluginName : Bukkit.getServer().getPluginManager().getPlugins()) {
+            if (pluginName.getName().equals("WorldGuard")) {
+                Plugin newPlugin = this.getServer().getPluginManager().getPlugin("WorldGuard");
+                if (newPlugin instanceof WorldGuardPlugin) {
+                    getLogger().info("Successfully hooked into WorldGuard");
+                    isWorldGuard = true;
+                }
+            }
+        }
+
+        /*######################################*/
+
         Bukkit.getLogger().log(Level.INFO, "[lightAshura] Register Commands and TabCompletions ...");
         Objects.requireNonNull(this.getCommand("a")).setExecutor(new AshuraCommandManager());
+        Objects.requireNonNull(this.getCommand("day")).setExecutor(new DayTimeCommand());
+        Objects.requireNonNull(this.getCommand("night")).setExecutor(new NightTimeCommand());
+        Objects.requireNonNull(this.getCommand("gmc")).setExecutor(new CreativeCommand());
+        Objects.requireNonNull(this.getCommand("gma")).setExecutor(new SurvivalCommand());
+        Objects.requireNonNull(this.getCommand("speed")).setExecutor(new SpeedCommand());
+
+
 
         PluginManager pm = Bukkit.getPluginManager();
         //pm.registerEvents(new OnJoinCommands(), this);
         pm.registerEvents(new OnFirstJoin(), this);
         pm.registerEvents(new BoxesOpener(), this);
+        pm.registerEvents(new WorldInit(), this);
 
         Bukkit.getLogger().log(Level.FINE, "[lightAshura] Successfully started lightAshrua.");
 

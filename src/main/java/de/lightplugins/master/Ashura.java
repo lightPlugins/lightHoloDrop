@@ -5,7 +5,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import de.lightplugins.commands.AshuraCommandManager;
 import de.lightplugins.commands.essentials.*;
 import de.lightplugins.commands.tabcompletion.AshuraTabCompletion;
-import de.lightplugins.commands.trades.TradeCommand;
 import de.lightplugins.database.DatabaseConnection;
 import de.lightplugins.events.BoxesOpener;
 import de.lightplugins.events.WorldInit;
@@ -85,7 +84,7 @@ public class Ashura extends JavaPlugin {
 
         Bukkit.getLogger().log(Level.INFO, "[lightAshura] Register Commands and TabCompletions ...");
 
-        Objects.requireNonNull(this.getCommand("a")).setExecutor(new AshuraCommandManager());
+        Objects.requireNonNull(this.getCommand("a")).setExecutor(new AshuraCommandManager(this));
         Objects.requireNonNull(this.getCommand("a")).setTabCompleter(new AshuraTabCompletion());
 
         Objects.requireNonNull(this.getCommand("day")).setExecutor(new DayTimeCommand());
@@ -94,7 +93,7 @@ public class Ashura extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("gms")).setExecutor(new SurvivalCommand());
         Objects.requireNonNull(this.getCommand("speed")).setExecutor(new SpeedCommand());
         Objects.requireNonNull(this.getCommand("heal")).setExecutor(new HealCommand());
-        Objects.requireNonNull(this.getCommand("trades")).setExecutor(new TradeCommand());
+        Objects.requireNonNull(this.getCommand("sun")).setExecutor(new SunCommand());
 
 
         PluginManager pm = Bukkit.getPluginManager();

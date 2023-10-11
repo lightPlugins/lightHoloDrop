@@ -29,7 +29,7 @@ public class HealCommand implements CommandExecutor {
             double maxHealth = target.getMaxHealth();
 
             target.setHealth(maxHealth);
-            //target.setFoodLevel(20);
+            target.setFoodLevel(20);
             Ashura.util.sendMessage(player, "&7Du hast #dc143d" + args[0] + " &7geheilt.");
             Ashura.util.sendMessage(target, "&7Du wurdest von #dc143d" + player.getName() + " &7geheilt.");
             return false;
@@ -43,7 +43,7 @@ public class HealCommand implements CommandExecutor {
         double maxHealth = player.getMaxHealth();
 
         player.setHealth(maxHealth);
-        //player.setFoodLevel(20);
+        player.setFoodLevel(20);
         Ashura.util.sendMessage(player, "&7Du hast dich #dc143derfolgreich &7geheilt.");
         return false;
     }

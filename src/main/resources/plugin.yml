@@ -23,5 +23,5 @@ commands:
     description: Change the fly and walk speed
   heal:
     description: Change the fly and walk speed
-  penis:
+  sun:
     description: Change the fly and walk speed

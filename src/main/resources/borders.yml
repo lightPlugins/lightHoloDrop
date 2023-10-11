@@ -1,0 +1,12 @@
+border:
+  no-permission-item:
+    material: BARRIER
+    displayName: '&cKeine Permission'
+    extra-lore: 'Du hast für diese Border keine Permission'
+  borders:
+    [0]:
+      material: GLOWSTONE
+      needed-permission: ashura.border.glowstone
+      displayname: '&6Glowstone Border'
+      lore:
+        - 'Das ist eine Test lore'

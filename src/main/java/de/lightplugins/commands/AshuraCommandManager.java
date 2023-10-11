@@ -1,7 +1,9 @@
 package de.lightplugins.commands;
 
+import de.lightplugins.commands.border.BorderMenuCommand;
 import de.lightplugins.commands.boxes.GiveBoxesCommand;
 import de.lightplugins.commands.main.ReloadCommand;
+import de.lightplugins.commands.trades.CustomTradeCommand;
 import de.lightplugins.util.SubCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,6 +25,8 @@ public class AshuraCommandManager implements CommandExecutor {
         //  Subcommand register here
         subCommands.add(new ReloadCommand());
         subCommands.add(new GiveBoxesCommand());
+        subCommands.add(new CustomTradeCommand());
+        subCommands.add(new BorderMenuCommand());
     }
 
     @Override

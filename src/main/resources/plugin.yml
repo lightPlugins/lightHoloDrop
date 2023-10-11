@@ -6,8 +6,8 @@ version: 1.0.0
 main: de.lightplugins.master.Ashura
 api-version: 1.20
 depend: [Vault]
-softdepend: [PlaceholderAPI, EcoItems, WorldGuard]
-loadbefore: [Essentials]
+softdepend: [PlaceholderAPI, EcoItems, WorldGuard, Eco, eco]
+loadbefore: [Essentials, WorldEdit]
 commands:
   a:
     description: Set the time of the current world to day
@@ -17,7 +17,11 @@ commands:
     description: Set the time to night with animation
   gmc:
     description: Set the gamemode to creative
-  gma:
+  gms:
     description: Set the gamemode to survival
   speed:
+    description: Change the fly and walk speed
+  heal:
+    description: Change the fly and walk speed
+  penis:
     description: Change the fly and walk speed

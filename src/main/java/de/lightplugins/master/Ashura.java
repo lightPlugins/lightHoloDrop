@@ -7,6 +7,7 @@ import de.lightplugins.commands.essentials.*;
 import de.lightplugins.commands.tabcompletion.AshuraTabCompletion;
 import de.lightplugins.database.DatabaseConnection;
 import de.lightplugins.events.BoxesOpener;
+import de.lightplugins.events.ItemDrop;
 import de.lightplugins.events.WorldInit;
 import de.lightplugins.events.OnFirstJoin;
 import de.lightplugins.files.FileManager;
@@ -101,6 +102,7 @@ public class Ashura extends JavaPlugin {
         pm.registerEvents(new OnFirstJoin(), this);
         pm.registerEvents(new BoxesOpener(), this);
         pm.registerEvents(new WorldInit(), this);
+        pm.registerEvents(new ItemDrop(), this);
 
         borderMenuManager = new InventoryManager(this);
         borderMenuManager.init();

@@ -37,59 +37,7 @@ public class ItemDrop implements Listener {
             }
 
             if(!itemTimers.containsKey(itemUUID)) {
-                BukkitRunnable timerTask = new BukkitRunnable() {
-
-                    int timerTicks = 10;
-                    @Override
-                    public void run() {
-
-                        timerTicks--;
-
-                        int stackAmount = itemStack.getAmount();
-
-                        if(timerTicks <= 0) {
-
-                            Location location = item.getLocation();
-
-                            if(location.getWorld() == null) {
-                                item.remove();
-                                cancel();
-                                itemTimers.remove(itemUUID);
-                                return;
-                            }
-
-                            location.getWorld().spawnParticle(Particle.LAVA, location, 20);
-                            item.remove();
-                            cancel();
-                            itemTimers.remove(itemUUID);
-                            return;
-                        }
-                        String itemName = "";
-
-                        item.setCustomName(null);
-                        item.setCustomNameVisible(false);
-
-                        if(item.getItemStack().getItemMeta() == null) {
-                            item.setCustomName(item.getName());
-                        }
-
-                        itemName = Ashura.colorTranslation.hexTranslation(
-                                "&7[#dc143d" + timerTicks + "&7] " + stackAmount + " &7x " + item.getName());
-
-                        if(item.getItemStack().getItemMeta().hasDisplayName()) {
-                            itemName = Ashura.colorTranslation.hexTranslation(
-                                    "&7[#dc143d" + timerTicks + "&7] " + stackAmount + " &7x " + item.getItemStack().getItemMeta().getDisplayName());
-
-                        }
-
-                        item.setCustomName(itemName);
-                        item.setCustomNameVisible(true);
-                    }
-                };
-
-                itemTimers.put(itemUUID, timerTask);
-                timerTask.runTaskTimer(Ashura.getInstance, 0, 20);
-
+                startTimer(item);
             }
         });
     }
@@ -111,61 +59,7 @@ public class ItemDrop implements Listener {
             UUID itemUUID = item.getUniqueId();
 
             if(!itemTimers.containsKey(itemUUID)) {
-                BukkitRunnable timerTask = new BukkitRunnable() {
-
-                    int timerTicks = 10;
-                    @Override
-                    public void run() {
-
-                        timerTicks--;
-
-                        int stackAmount = itemStack.getAmount();
-
-                        if(timerTicks <= 0) {
-
-                            Location location = item.getLocation();
-
-                            if(location.getWorld() == null) {
-                                item.remove();
-                                cancel();
-                                itemTimers.remove(itemUUID);
-                                return;
-                            }
-
-                            location.getWorld().spawnParticle(Particle.LAVA, location, 20);
-                            item.remove();
-                            cancel();
-                            itemTimers.remove(itemUUID);
-                            return;
-                        }
-                        String itemName = "";
-
-                        item.setCustomName(null);
-                        item.setCustomNameVisible(false);
-
-                        if(item.getItemStack().getItemMeta() == null) {
-                            item.setCustomName(item.getName());
-                        }
-
-                        itemName = Ashura.colorTranslation.hexTranslation(
-                                "&7[#dc143d" + timerTicks + "&7] " + stackAmount + " &7x " + item.getName());
-
-                        if(item.getItemStack().getItemMeta().hasDisplayName()) {
-                            itemName = Ashura.colorTranslation.hexTranslation(
-                                    "&7[#dc143d" + timerTicks + "&7] " + stackAmount + " &7x " + item.getItemStack().getItemMeta().getDisplayName());
-
-                        }
-
-                        item.setCustomName(itemName);
-                        item.setCustomNameVisible(true);
-
-
-                    }
-                };
-
-                itemTimers.put(itemUUID, timerTask);
-                timerTask.runTaskTimer(Ashura.getInstance, 0, 20);
-
+                startTimer(item);
             }
         }
         e.getDrops().clear();
@@ -177,10 +71,18 @@ public class ItemDrop implements Listener {
         UUID itemUUID = item.getUniqueId();
 
         itemTimers.remove(itemUUID);
+        startTimer(item);
+
+    }
+
+    private void startTimer(Item item) {
+
+        UUID itemUUID = item.getUniqueId();
 
         BukkitRunnable timerTask = new BukkitRunnable() {
 
-            int timerTicks = 10;
+            int timerTicks = 61;
+
             @Override
             public void run() {
 
@@ -236,11 +138,9 @@ public class ItemDrop implements Listener {
 
         itemTimers.put(itemUUID, timerTask);
         timerTask.runTaskTimer(Ashura.getInstance, 0, 20);
-
-
-
-
     }
+
+
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
 
@@ -253,65 +153,8 @@ public class ItemDrop implements Listener {
         }
 
         if(!itemTimers.containsKey(itemUUID)) {
-            BukkitRunnable timerTask = new BukkitRunnable() {
 
-                int timerTicks = 10;
-                @Override
-                public void run() {
-
-                    timerTicks--;
-
-                    int stackAmount = e.getItemDrop().getItemStack().getAmount();
-
-                    if(timerTicks <= 0) {
-
-                        Location location = item.getLocation();
-
-                        if(location.getWorld() == null) {
-                            item.remove();
-                            cancel();
-                            itemTimers.remove(itemUUID);
-                            return;
-                        }
-
-                        location.getWorld().spawnParticle(Particle.LAVA, location, 20);
-                        item.remove();
-                        cancel();
-                        itemTimers.remove(itemUUID);
-                        return;
-                    }
-                    String itemName = "";
-
-                    item.setCustomName(null);
-                    item.setCustomNameVisible(false);
-
-                    if(item.getItemStack().getItemMeta() == null) {
-                        item.setCustomName(item.getName());
-                    }
-
-                    itemName = Ashura.colorTranslation.hexTranslation(
-                            "&7[#dc143d" + timerTicks + "&7] " + stackAmount + " &7x " + item.getName());
-
-                    if(item.getItemStack().getType().equals(Material.AIR)) {
-                        cancel();
-                        itemTimers.remove(itemUUID);
-                        return;
-                    }
-                    if(item.getItemStack().getItemMeta().hasDisplayName()) {
-                        itemName = Ashura.colorTranslation.hexTranslation(
-                                "&7[#dc143d" + timerTicks + "&7] " + stackAmount + " &7x " + item.getItemStack().getItemMeta().getDisplayName());
-
-                    }
-
-                    item.setCustomName(itemName);
-                    item.setCustomNameVisible(true);
-
-
-                }
-            };
-
-            itemTimers.put(itemUUID, timerTask);
-            timerTask.runTaskTimer(Ashura.getInstance, 0, 20);
+            startTimer(item);
 
         }
     }

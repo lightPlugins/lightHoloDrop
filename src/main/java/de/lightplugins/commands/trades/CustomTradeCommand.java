@@ -34,7 +34,8 @@ public class CustomTradeCommand extends SubCommand {
 
         FileConfiguration trades = Ashura.trades.getConfig();
 
-        if(!player.hasPermission("ashura.admin")) {
+        if(!player.hasPermission("ashura.command.trades")) {
+            Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
             return false;
         }
 

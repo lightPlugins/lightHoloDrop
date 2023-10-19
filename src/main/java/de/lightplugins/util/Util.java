@@ -3,9 +3,9 @@ package de.lightplugins.util;
 import de.lightplugins.enums.MessagePath;
 import de.lightplugins.master.Ashura;
 import org.bukkit.entity.Player;
+import org.joml.RoundingMode;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.Random;
 
@@ -15,6 +15,7 @@ public class Util {
         String prefix = MessagePath.Prefix.getPath();
         player.sendMessage(Ashura.colorTranslation.hexTranslation(prefix + message));
     }
+
     /*  Send a message List to player without Prefix  */
 
     public void sendMessageList(Player player, List<String> list) {

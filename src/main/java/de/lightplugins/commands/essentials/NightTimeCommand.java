@@ -24,6 +24,7 @@ public class NightTimeCommand implements CommandExecutor {
 
         if(!player.hasPermission("ashura.admin.command.night")) {
             Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
+            return false;
         }
 
         Ashura.util.sendMessage(player,

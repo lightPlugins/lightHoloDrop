@@ -19,6 +19,7 @@ public class CreativeCommand implements CommandExecutor {
 
             if(!player.hasPermission("ashura.admin.command.gmc.other")) {
                 Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
+                return false;
             }
 
             Player target = Bukkit.getPlayer(args[0]);
@@ -43,6 +44,7 @@ public class CreativeCommand implements CommandExecutor {
 
             if(!player.hasPermission("ashura.admin.command.gmc")) {
                 Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
+                return false;
             }
 
             player.setGameMode(GameMode.CREATIVE);

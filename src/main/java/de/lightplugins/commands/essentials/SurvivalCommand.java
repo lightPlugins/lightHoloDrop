@@ -19,6 +19,7 @@ public class SurvivalCommand implements CommandExecutor {
 
             if(!player.hasPermission("ashura.admin.command.gms.other")) {
                 Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
+                return false;
             }
 
             Player target = Bukkit.getPlayer(args[0]);
@@ -43,6 +44,7 @@ public class SurvivalCommand implements CommandExecutor {
 
             if(!player.hasPermission("ashura.admin.command.gms")) {
                 Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
+                return false;
             }
 
             player.setGameMode(GameMode.SURVIVAL);

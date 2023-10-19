@@ -131,6 +131,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.willfp</groupId>
+            <artifactId>EcoJobs</artifactId>
+            <version>3.36.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
             <version>7.0.9</version>
@@ -148,6 +154,12 @@
             <groupId>TeamMT</groupId>
             <artifactId>VillagerGUIApi.api</artifactId>
             <version>1.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.realityforge.org.jetbrains.annotations</groupId>
+            <artifactId>org.jetbrains.annotations</artifactId>
+            <version>1.7.0</version>
         </dependency>
 
     </dependencies>

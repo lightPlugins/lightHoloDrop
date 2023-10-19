@@ -25,6 +25,7 @@ public class DayTimeCommand implements CommandExecutor {
 
         if(!player.hasPermission("ashura.admin.command.day")) {
             Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
+            return false;
         }
 
         Ashura.util.sendMessage(player,

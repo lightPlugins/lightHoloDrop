@@ -18,7 +18,7 @@ public class SunCommand implements CommandExecutor {
         }
 
         if(!player.hasPermission("ashura.command.sun")) {
-            Ashura.util.sendMessage(player, "&cFür diesen Befehl hast du keine Berechtigung!");
+            Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
             return false;
         }
 

@@ -29,7 +29,7 @@ public class ReloadCommand extends SubCommand {
         if(args.length == 1) {
 
             if(!player.hasPermission("ashura.admin.command.reload")) {
-                Ashura.util.sendMessage(player, "&cDu hast keine Berechtigung für diesen Befehl &7!");
+                Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
                 return false;
             }
 

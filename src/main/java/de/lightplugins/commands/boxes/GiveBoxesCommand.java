@@ -46,7 +46,7 @@ public class GiveBoxesCommand extends SubCommand {
                 }
 
                 if (!player.hasPermission("ashura.admin.boxes.give")) {
-                    Ashura.util.sendMessage(player, "&cDu hast keine Berechtigung für diesen Befehl &7!");
+                    Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
                     return false;
                 }
 

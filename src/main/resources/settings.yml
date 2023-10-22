@@ -1,43 +1,93 @@
-mysql:
-  # if disabled, the plugin will use automatically sqlite for single server setup
-  enable: false
-  host: 127.0.0.1
-  port: 3306
-  database: databaseName
-  user: username
-  password: YourSecretPassword
-  ssl: false
-  advanced:
-    # Don't change any values here if you don't know what you're doing
-    connectionPoolSize: 10
-    prepStmtCacheSize: 250
-    prepStmtCacheSqlLimit: 2048
-    cachePrepStmts: true
-    useServerPrepStmts: true
 settings:
-  onServerJoin:
-    commands:
+  itemHolo:
+#   The visual display name of the dropped item.
+#   Follow placeholders are available: #timer#, #amount#, #item#
+    displayName: '&8[&#dc143d#timer#&8] &f#amount# &7x&r #item#'
+#   How long should it take, if the dropped item get deleted ?
+    timer: 60
+#   Spawn particle, if the dropped item gets deleted
+    particle:
       enable: true
-      list:
-#         command;executedAs;delayInTicks
-        - 'ecoitems give #player-name# beginner_axe;console;20'
-        - 'ecoitems give #player-name# beginner_pickaxe;console;20'
-        - 'ecoitems give #player-name# beginner_shovel;console;20'
-        - 'ecoitems give #player-name# beginner_sword;console;20'
-        - 'ecoarmor give #player-name# set:beginner;console;20'
-    message:
-      enable: true
-      test:
-        - ''
-        - ' Das ist ein toller Server'
-        - ''
-  worldGuard:
-    # Generiert nach erfolgreichem Welten laden folgende Flags
-    generateWorldGuardFlagsOnInit:
+      type: LAVA
+      amount: 30
+#   Specified in which world should drop items become visual display names
+#   There are two modes available:
+#     - whitelist -> only in these worlds become dropped items visual names.
+#     - blacklist -> exclude these worlds from become dropped items visual names.
+    whitelist:
+      mode: whitelist
       worlds:
+        - 'world'
+        - 'world_nether'
+        - 'world_end'
+    glow:
+#     Here you can define specified colors to custom Items.
+#     You can use follow modes: vanilla, custommodeldata, itemsadder, ecoitems, ecoarmor
+#     You can use follow colors: BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY,
+#                                DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE
+#
+#     Minecraft Formatting -> https://minecraft.fandom.com/wiki/Formatting_codes
+#     Example for Vanilla Items:
+#        [0]:
+#          mode: vanilla
+#          data: 'REDSTONE'
+#          color: RED
+#     Example for CustomModelData:
+#        [0]:
+#          mode: modeldata
+#          data: '15544'
+#          color: RED
+#     Example for ItemsAdder:
+#        [0]:
+#          mode: itemsadder
+#          data: 'amber_ore'
+#          color: RED
+#     Example for ecoitems:
+#        [0]:
+#          mode: ecoitems
+#          data: 'test_item'
+#          color: RED
+#     Example for ecoarmor:
+#        [0]:
+#          mode: ecoarmor
+#          data: 'category:test_chestplate'
+#          color: RED
+#
+#     Enable the default color for all dropped items. If it false, only the customItems below will glow
+      enableByDefault: true
+#     The default color of all dropped Items
+      defaultColor: GRAY
+#     The fun part begins here. Define your own items.
+      customItems:
         [0]:
-          world: 'NaturGrotte_'
-          craftingTableUse: deny
-          passthrough: deny
-          use: allow
-          chestAccess: allow
+          mode: vanilla
+          data: 'RAW_GOLD'
+          color: GOLD
+        [1]:
+          mode: vanilla
+          data: 'DIAMOND'
+          color: AQUA
+        [2]:
+          mode: vanilla
+          data: 'EMERALD'
+          color: GREEN
+        [3]:
+          mode: vanilla
+          data: 'RAW_IRON'
+          color: GRAY
+        [4]:
+          mode: vanilla
+          data: 'COAL'
+          color: BLACK
+        [5]:
+          mode: vanilla
+          data: 'RAW_COPPER'
+          color: DARK_GRAY
+        [5]:
+          mode: vanilla
+          data: 'LAPIS_LAZULI'
+          color: BLUE
+        [5]:
+          mode: vanilla
+          data: 'REDSTONE'
+          color: RED

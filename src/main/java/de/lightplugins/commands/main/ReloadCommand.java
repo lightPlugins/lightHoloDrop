@@ -1,6 +1,6 @@
 package de.lightplugins.commands.main;
 
-import de.lightplugins.master.Ashura;
+import de.lightplugins.master.Light;
 import de.lightplugins.util.SubCommand;
 import org.bukkit.entity.Player;
 
@@ -29,13 +29,13 @@ public class ReloadCommand extends SubCommand {
         if(args.length == 1) {
 
             if(!player.hasPermission("ashura.admin.command.reload")) {
-                Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
+                Light.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
                 return false;
             }
-            Ashura.settings.reloadConfig("settings.yml");
-            Ashura.messages.reloadConfig("messages.yml");
+            Light.settings.reloadConfig("settings.yml");
+            Light.messages.reloadConfig("messages.yml");
 
-            Ashura.util.sendMessage(player, "&7Configs wurden #dc143derfolgreich &7neu geladen.");
+            Light.util.sendMessage(player, "&7Configs wurden #dc143derfolgreich &7neu geladen.");
         }
 
         return false;

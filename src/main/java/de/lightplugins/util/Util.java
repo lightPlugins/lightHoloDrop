@@ -1,7 +1,7 @@
 package de.lightplugins.util;
 
 import de.lightplugins.enums.MessagePath;
-import de.lightplugins.master.Ashura;
+import de.lightplugins.master.Light;
 import org.bukkit.entity.Player;
 import org.joml.RoundingMode;
 
@@ -13,14 +13,14 @@ public class Util {
 
     public void sendMessage(Player player, String message) {
         String prefix = MessagePath.Prefix.getPath();
-        player.sendMessage(Ashura.colorTranslation.hexTranslation(prefix + message));
+        player.sendMessage(Light.colorTranslation.hexTranslation(prefix + message));
     }
 
     /*  Send a message List to player without Prefix  */
 
     public void sendMessageList(Player player, List<String> list) {
         for(String s : list) {
-            player.sendMessage(Ashura.colorTranslation.hexTranslation(s));
+            player.sendMessage(Light.colorTranslation.hexTranslation(s));
         }
     }
 

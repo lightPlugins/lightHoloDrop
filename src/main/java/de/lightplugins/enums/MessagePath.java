@@ -1,6 +1,6 @@
 package de.lightplugins.enums;
 
-import de.lightplugins.master.Ashura;
+import de.lightplugins.master.Light;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public enum MessagePath {
@@ -13,7 +13,7 @@ public enum MessagePath {
 
     MessagePath(String path) { this.path = path; }
     public String getPath() {
-        FileConfiguration paths = Ashura.messages.getConfig();
+        FileConfiguration paths = Light.messages.getConfig();
         try {
             return paths.getString(this.path);
         } catch (Exception e) {

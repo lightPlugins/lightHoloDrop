@@ -16,15 +16,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Objects;
 import java.util.logging.Level;
 
-public class Ashura extends JavaPlugin {
+public class Light extends JavaPlugin {
 
-    public static Ashura getInstance;
+    public static Light getInstance;
 
     public static FileManager settings;
     public static FileManager messages;
-    public static FileManager boxes;
-    public static FileManager trades;
-    public static FileManager border;
 
     public static ColorTranslation colorTranslation;
     public static Util util;
@@ -37,18 +34,14 @@ public class Ashura extends JavaPlugin {
 
     public void onLoad() {
 
-        Bukkit.getLogger().log(Level.FINE, "[lightAshura] Starting lightAshura");
+        Bukkit.getLogger().log(Level.FINE, "[lightItemHolo] Starting lightItemHolo");
 
         getInstance = this;
 
         settings = new FileManager(this, "settings.yml");
         messages = new FileManager(this, "messages.yml");
-        boxes = new FileManager(this, "boxes.yml");
-        trades = new FileManager(this, "trades.yml");
-        border = new FileManager(this, "borders.yml");
 
         colorTranslation = new ColorTranslation();
-
         util = new Util();
 
     }
@@ -62,7 +55,7 @@ public class Ashura extends JavaPlugin {
             if (pluginName.getName().equals("WorldGuard")) {
                 Plugin newPlugin = this.getServer().getPluginManager().getPlugin("WorldGuard");
                 if (newPlugin instanceof WorldGuardPlugin) {
-                    getLogger().info("[lightAshura] Successfully hooked into WorldGuard");
+                    getLogger().info("[lightItemHolo] Successfully hooked into WorldGuard");
                     isWorldGuard = true;
                 }
             }
@@ -70,19 +63,16 @@ public class Ashura extends JavaPlugin {
 
         /*######################################*/
 
-        Bukkit.getLogger().log(Level.INFO, "[lightAshura] Register Commands and TabCompletions ...");
+        Bukkit.getLogger().log(Level.INFO, "[lightItemHolo] Register Commands and TabCompletions ...");
 
-        Objects.requireNonNull(this.getCommand("a")).setExecutor(new AshuraCommandManager(this));
-        Objects.requireNonNull(this.getCommand("a")).setTabCompleter(new AshuraTabCompletion());
+        Objects.requireNonNull(this.getCommand("lholo")).setExecutor(new AshuraCommandManager(this));
+        Objects.requireNonNull(this.getCommand("lholo")).setTabCompleter(new AshuraTabCompletion());
 
-
+        Bukkit.getLogger().log(Level.INFO, "[lightItemHolo] Enable visual item names with colors ...");
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new ItemDrop(), this);
 
-        borderMenuManager = new InventoryManager(this);
-        borderMenuManager.init();
-
-        Bukkit.getLogger().log(Level.FINE, "[lightAshura] Successfully started lightAshrua.");
+        Bukkit.getLogger().log(Level.FINE, "[lightItemHolo] Successfully started lightItemHolo.");
 
     }
 

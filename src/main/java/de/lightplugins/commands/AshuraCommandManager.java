@@ -1,7 +1,7 @@
 package de.lightplugins.commands;
 
 import de.lightplugins.commands.main.ReloadCommand;
-import de.lightplugins.master.Ashura;
+import de.lightplugins.master.Light;
 import de.lightplugins.util.SubCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,8 +18,8 @@ public class AshuraCommandManager implements CommandExecutor {
         return subCommands;
     }
 
-    public Ashura plugin;
-    public AshuraCommandManager(Ashura plugin) {
+    public Light plugin;
+    public AshuraCommandManager(Light plugin) {
         this.plugin = plugin;
         //  Subcommand register here
         subCommands.add(new ReloadCommand());

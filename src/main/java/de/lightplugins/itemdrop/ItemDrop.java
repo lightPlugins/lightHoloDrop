@@ -1,17 +1,12 @@
 package de.lightplugins.itemdrop;
 
-import de.lightplugins.master.Ashura;
+import de.lightplugins.master.Light;
 import de.lightplugins.util.ItemGlow;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDropItemEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -26,40 +21,118 @@ public class ItemDrop implements Listener {
 
     private Map<UUID, BukkitRunnable> itemTimers = new HashMap<>();
 
+    private boolean checkWorld(String worldName, String configWorld) {
+        return worldName.equalsIgnoreCase(configWorld);
+    }
+
     @EventHandler
     public void onBlockBreakEvent(ItemSpawnEvent e) {
 
-        Item item = e.getEntity();
+        FileConfiguration settings = Light.settings.getConfig();
 
-        UUID itemUUID = item.getUniqueId();
-        ItemStack itemStack = item.getItemStack();
+        settings.getStringList("settings.itemHolo.whitelist.worlds").forEach(singleWorld -> {
+            if(Objects.requireNonNull(settings.getString(
+                    "settings.itemHolo.whitelist.mode")).equalsIgnoreCase("whitelist")) {
 
-        if(itemStack.getItemMeta() == null) {
-            return;
-        }
+                if(singleWorld.equalsIgnoreCase(Objects.requireNonNull(e.getLocation().getWorld()).getName())) {
 
-        if(!itemTimers.containsKey(itemUUID)) {
-            startTimer(item);
-        }
+
+                    Item item = e.getEntity();
+
+                    UUID itemUUID = item.getUniqueId();
+                    ItemStack itemStack = item.getItemStack();
+
+                    if(itemStack.getItemMeta() == null) {
+                        return;
+                    }
+
+                    if(!itemTimers.containsKey(itemUUID)) {
+                        startTimer(item);
+                        return;
+                    }
+                    return;
+                }
+            }
+
+            if(Objects.requireNonNull(settings.getString(
+                    "settings.itemHolo.whitelist.mode")).equalsIgnoreCase("blacklist")) {
+
+                if(singleWorld.equalsIgnoreCase(Objects.requireNonNull(e.getLocation().getWorld()).getName())) {
+                    return;
+
+                }
+
+                Item item = e.getEntity();
+
+                UUID itemUUID = item.getUniqueId();
+                ItemStack itemStack = item.getItemStack();
+
+                if(itemStack.getItemMeta() == null) {
+                    return;
+                }
+
+                if(!itemTimers.containsKey(itemUUID)) {
+                    startTimer(item);
+                }
+            }
+        });
     }
 
     @EventHandler
     public void onItemMerge(ItemMergeEvent e) {
-        Item item = e.getEntity();
-        UUID itemUUID = item.getUniqueId();
 
-        itemTimers.remove(itemUUID);
-        startTimer(item);
+        FileConfiguration settings = Light.settings.getConfig();
 
+        settings.getStringList("settings.itemHolo.whitelist.worlds").forEach(singleWorld -> {
+
+            if(Objects.requireNonNull(settings.getString(
+                    "settings.itemHolo.whitelist.mode")).equalsIgnoreCase("whitelist")) {
+
+                Item item = e.getEntity();
+                UUID itemUUID = item.getUniqueId();
+
+                itemTimers.remove(itemUUID);
+                startTimer(item);
+                return;
+
+            }
+
+            if(Objects.requireNonNull(settings.getString(
+                    "settings.itemHolo.whitelist.mode")).equalsIgnoreCase("blacklist")) {
+
+                return;
+            }
+
+            Item item = e.getEntity();
+            UUID itemUUID = item.getUniqueId();
+
+            itemTimers.remove(itemUUID);
+            startTimer(item);
+
+        });
     }
 
     private void startTimer(Item item) {
 
+        FileConfiguration settings = Light.settings.getConfig();
+        int timer = settings.getInt("settings.itemHolo.timer");
+        String displayName = settings.getString("settings.itemHolo.displayName");
+        boolean enableDefaultColor = settings.getBoolean("settings.itemHolo.glow.enableByDefault");
+        ChatColor defaultColor = ChatColor.valueOf(settings.getString("settings.itemHolo.glow.defaultColor"));
+        Particle particle = Particle.valueOf(settings.getString("settings.itemHolo.particle.type"));
+        boolean enableParticle = settings.getBoolean("settings.itemHolo.particle.enable");
+        int particleAmount = settings.getInt("settings.itemHolo.particle.amount");
+
+        if(displayName == null) {
+            displayName = "Error in Settings.yml";
+        }
+
         UUID itemUUID = item.getUniqueId();
+        String finalDisplayName = displayName;
 
         BukkitRunnable timerTask = new BukkitRunnable() {
 
-            int timerTicks = 61;
+            int timerTicks = timer + 1;
 
             @Override
             public void run() {
@@ -79,7 +152,10 @@ public class ItemDrop implements Listener {
                         return;
                     }
 
-                    location.getWorld().spawnParticle(Particle.LAVA, location, 20);
+                    if(enableParticle) {
+                        location.getWorld().spawnParticle(particle, location, particleAmount);
+                    }
+
                     item.remove();
                     cancel();
                     itemTimers.remove(itemUUID);
@@ -94,8 +170,10 @@ public class ItemDrop implements Listener {
                     item.setCustomName(item.getName());
                 }
 
-                itemName = Ashura.colorTranslation.hexTranslation(
-                        "&7[#dc143d" + timerTicks + "&7] &f" + stackAmount + " &7x &f" + item.getName());
+                itemName = Light.colorTranslation.hexTranslation(finalDisplayName
+                        .replace("#timer#", String.valueOf(timerTicks))
+                        .replace("#amount#", String.valueOf(stackAmount))
+                        .replace("#item#", item.getName()));
 
                 if(item.getItemStack().getType().equals(Material.AIR)) {
                     cancel();
@@ -103,40 +181,160 @@ public class ItemDrop implements Listener {
                     return;
                 }
                 if(item.getItemStack().getItemMeta().hasDisplayName()) {
-                    itemName = Ashura.colorTranslation.hexTranslation(
-                            "&7[#dc143d" + timerTicks + "&7] &f" + stackAmount + " &7x " + item.getItemStack().getItemMeta().getDisplayName());
+                    itemName = Light.colorTranslation.hexTranslation(finalDisplayName
+                            .replace("#timer#", String.valueOf(timerTicks))
+                            .replace("#amount#", String.valueOf(stackAmount))
+                            .replace("#item#", item.getItemStack().getItemMeta().getDisplayName()));
 
                 }
 
                 item.setCustomName(itemName);
                 item.setCustomNameVisible(true);
-                item.setGlowing(true);
-                ItemGlow.setGlowColor(ChatColor.GRAY, item);
 
+                if(Objects.requireNonNull(settings.getConfigurationSection(
+                        "settings.itemHolo.glow.customItems")).getKeys(false).isEmpty()) {
+                    if(enableDefaultColor) {
+                        item.setGlowing(true);
+                        ItemGlow.setGlowColor(defaultColor, item);
+                        Bukkit.getLogger().log(Level.WARNING, "TEST -1");
+                        return;
+                    }
+                }
+
+                for(String path : Objects.requireNonNull(settings.getConfigurationSection(
+                        "settings.itemHolo.glow.customItems")).getKeys(false)) {
+
+                    Bukkit.getLogger().log(Level.WARNING, "TEST");
+
+                    String defaultPath = "settings.itemHolo.glow.customItems." + path + ".";
+                    String mode = settings.getString(defaultPath + "mode");
+                    String data = settings.getString(defaultPath + "data");
+                    ChatColor color = ChatColor.valueOf(settings.getString(defaultPath + "color"));
+
+                    if(mode == null) {
+                        return;
+                    }
+
+                    if(data == null) {
+                        return;
+                    }
+
+                    /*
+                     *
+                     *  VANILLA MODE
+                     *
+                     */
+
+                    if(mode.equalsIgnoreCase("vanilla")) {
+
+                        Bukkit.getLogger().log(Level.WARNING, "TEST 0");
+                        ItemStack is = new ItemStack(Material.valueOf(data), 1);
+
+                        if(is.getItemMeta() == null) {
+                            Bukkit.getLogger().log(Level.WARNING, "TEST 1");
+                            return; // Maybe more debugging here -> wrong config format
+                        }
+
+                        Bukkit.getLogger().log(Level.WARNING, "TEST: " + item.getItemStack().getType() + " " + is.getType());
+
+                        if(item.getItemStack().getType().equals(is.getType())) {
+                            Bukkit.getLogger().log(Level.WARNING, "TEST 3");
+                            item.setGlowing(true);
+                            Bukkit.getLogger().log(Level.WARNING, "TEST: " + color + " " + path );
+                            ItemGlow.setGlowColor(color, item);
+                            return;
+                        }
+                    }
+
+                    /*
+                     *
+                     *  CUSTOMMODELDATA MODE
+                     *
+                     */
+
+                    if(mode.equalsIgnoreCase("modeldata")) {
+
+                        Bukkit.getLogger().log(Level.WARNING, "TEST 4");
+
+                        ItemStack is = new ItemStack(Material.valueOf(data), 1);
+
+                        if(is.getItemMeta() == null) {
+                            return; // Maybe more debugging here -> wrong config format
+                        }
+
+                        if(!is.getItemMeta().hasCustomModelData()) {
+                            if(enableDefaultColor) {
+                                item.setGlowing(true);
+                                ItemGlow.setGlowColor(defaultColor, item);
+                            }
+                            return; // Maybe more debugging here -> wrong config format
+                        }
+
+                        int customModelData = is.getItemMeta().getCustomModelData();
+                        int modelDataConfig = Integer.parseInt(data);
+
+                        if(customModelData == modelDataConfig) {
+                            item.setGlowing(true);
+                            ItemGlow.setGlowColor(color, item);
+
+                        }
+                    }
+                }
+                if(enableDefaultColor) {
+                    Bukkit.getLogger().log(Level.WARNING, "TEST 2");
+                    item.setGlowing(true);
+                    ItemGlow.setGlowColor(defaultColor, item);
+                }
             }
         };
 
         itemTimers.put(itemUUID, timerTask);
-        timerTask.runTaskTimer(Ashura.getInstance, 0, 20);
+        timerTask.runTaskTimer(Light.getInstance, 0, 20);
     }
 
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
 
-        Item item = e.getItemDrop();
-        UUID itemUUID = item.getUniqueId();
-        ItemStack itemStack = item.getItemStack();
+        FileConfiguration settings = Light.settings.getConfig();
 
-        if (itemStack.getItemMeta() == null) {
-            return;
-        }
+        settings.getStringList("settings.itemHolo.whitelist.worlds").forEach(singleWorld -> {
 
-        if(!itemTimers.containsKey(itemUUID)) {
+            if(Objects.requireNonNull(settings.getString(
+                    "settings.itemHolo.whitelist.mode")).equalsIgnoreCase("whitelist")) {
 
-            startTimer(item);
+                Item item = e.getItemDrop();
+                UUID itemUUID = item.getUniqueId();
+                ItemStack itemStack = item.getItemStack();
 
-        }
+                if (itemStack.getItemMeta() == null) {
+                    return;
+                }
+
+                if(!itemTimers.containsKey(itemUUID)) {
+                    startTimer(item);
+                    return;
+                }
+                return;
+            }
+
+            if(Objects.requireNonNull(settings.getString(
+                    "settings.itemHolo.whitelist.mode")).equalsIgnoreCase("blacklist")) {
+                return;
+            }
+
+            Item item = e.getItemDrop();
+            UUID itemUUID = item.getUniqueId();
+            ItemStack itemStack = item.getItemStack();
+
+            if (itemStack.getItemMeta() == null) {
+                return;
+            }
+
+            if(!itemTimers.containsKey(itemUUID)) {
+                startTimer(item);
+            }
+        });
     }
 
 

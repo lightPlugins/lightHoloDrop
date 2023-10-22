@@ -100,6 +100,7 @@ public class ItemDrop implements Listener {
                         item.remove();
                         cancel();
                         itemTimers.remove(itemUUID);
+                        Bukkit.getLogger().log(Level.SEVERE, "TEST 4");
                         return;
                     }
 
@@ -107,15 +108,19 @@ public class ItemDrop implements Listener {
                     item.remove();
                     cancel();
                     itemTimers.remove(itemUUID);
+                    Bukkit.getLogger().log(Level.SEVERE, "TEST 5");
                     return;
                 }
                 String itemName = "";
+
+                Bukkit.getLogger().log(Level.SEVERE, "TEST 1");
 
                 item.setCustomName(null);
                 item.setCustomNameVisible(false);
 
                 if(item.getItemStack().getItemMeta() == null) {
                     item.setCustomName(item.getName());
+                    Bukkit.getLogger().log(Level.SEVERE, "TEST 2");
                 }
 
                 itemName = Ashura.colorTranslation.hexTranslation(
@@ -124,11 +129,13 @@ public class ItemDrop implements Listener {
                 if(item.getItemStack().getType().equals(Material.AIR)) {
                     cancel();
                     itemTimers.remove(itemUUID);
+                    Bukkit.getLogger().log(Level.SEVERE, "TEST 2");
                     return;
                 }
                 if(item.getItemStack().getItemMeta().hasDisplayName()) {
                     itemName = Ashura.colorTranslation.hexTranslation(
                             "&7[#dc143d" + timerTicks + "&7] " + stackAmount + " &7x " + item.getItemStack().getItemMeta().getDisplayName());
+                    Bukkit.getLogger().log(Level.SEVERE, "TEST 3");
 
                 }
 

@@ -76,8 +76,6 @@ public class Ashura extends JavaPlugin {
 
         for(Plugin pluginName : Bukkit.getServer().getPluginManager().getPlugins()) {
 
-            getLogger().log(Level.WARNING, "TEST " + pluginName.getName());
-
             if (pluginName.getName().equals("WorldGuard")) {
                 Plugin newPlugin = this.getServer().getPluginManager().getPlugin("WorldGuard");
                 if (newPlugin instanceof WorldGuardPlugin) {
@@ -87,7 +85,6 @@ public class Ashura extends JavaPlugin {
             }
 
             if (pluginName.getName().equals("EcoJobs")) {
-                getLogger().log(Level.SEVERE, "TEST " + pluginName.getName());
                 Plugin newPlugin = this.getServer().getPluginManager().getPlugin("EcoJobs");
                 if (newPlugin instanceof EcoJobsPlugin) {
                     getLogger().info("[lightAshura] Successfully hooked into EcoJobs");

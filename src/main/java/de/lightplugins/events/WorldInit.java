@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.lightplugins.master.Ashura;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,8 +17,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class WorldInit implements Listener {
 
@@ -28,58 +31,83 @@ public class WorldInit implements Listener {
     public void onDungeonServerCreate(WorldLoadEvent e) {
         World world = e.getWorld();
 
+        Bukkit.getLogger().log(Level.INFO,
+                "[lightAshura] Founding world " + world.getName());
+        Bukkit.getLogger().log(Level.INFO,
+                "[lightAshura] Try to add flags to world " + world.getName());
+
         FileConfiguration settings = Ashura.settings.getConfig();
 
         if(!Ashura.getInstance.isWorldGuard) { return; }
 
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionManager regions = container.get(BukkitAdapter.adapt(world));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
 
-        if(regions == null) { return; }
+                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                RegionManager regions = container.get(BukkitAdapter.adapt(world));
 
-        ProtectedRegion region = regions.getRegion("__global__");
+                if(regions == null) { return; }
 
-        if(region == null) { return; }
+                ProtectedRegion region = regions.getRegion("__global__");
 
-        region.setFlag(Flags.DENY_MESSAGE, "");
+                if(region == null) { return; }
 
-        for(String path : Objects.requireNonNull(settings.getConfigurationSection(defaultConfig)).getKeys(false)) {
+                region.setFlag(Flags.DENY_MESSAGE, "");
 
-            String targetWorldName = settings.getString(defaultConfig + "." + path + ".world");
-            if(targetWorldName == null) { return; }
-            String passthroughState = settings.getString(defaultConfig + "." + path + ".passthrough");
-            if(passthroughState == null) { return; }
-            String interactState = settings.getString(defaultConfig + "." + path + ".use");
-            if(interactState == null) { return; }
-            String chestAccessState = settings.getString(defaultConfig + "." + path + ".chestAccess");
-            if(chestAccessState == null) { return; }
+                for(String path : Objects.requireNonNull(settings.getConfigurationSection(defaultConfig)).getKeys(false)) {
 
-            if(world.getName().contains(targetWorldName)) {
-                if(passthroughState.equalsIgnoreCase("deny")) {
-                    region.setFlag(Flags.PASSTHROUGH, StateFlag.State.DENY);
-                }
 
-                if(passthroughState.equalsIgnoreCase("allow")) {
-                    region.setFlag(Flags.PASSTHROUGH, StateFlag.State.ALLOW);
-                }
+                    String targetWorldName = settings.getString(defaultConfig + "." + path + ".world");
+                    if(targetWorldName == null) { return; }
+                    String passthroughState = settings.getString(defaultConfig + "." + path + ".passthrough");
+                    if(passthroughState == null) { return; }
+                    String interactState = settings.getString(defaultConfig + "." + path + ".use");
+                    if(interactState == null) { return; }
+                    String chestAccessState = settings.getString(defaultConfig + "." + path + ".chestAccess");
+                    if(chestAccessState == null) { return; }
 
-                if(interactState.equalsIgnoreCase("deny")) {
-                    region.setFlag(Flags.USE, StateFlag.State.DENY);
-                }
 
-                if(interactState.equalsIgnoreCase("allow")) {
-                    region.setFlag(Flags.USE, StateFlag.State.ALLOW);
-                }
+                    if(world.getName().contains(targetWorldName)) {
+                        if(passthroughState.equalsIgnoreCase("deny")) {
+                            region.setFlag(Flags.PASSTHROUGH, StateFlag.State.DENY);
+                            Bukkit.getLogger().log(Level.INFO,
+                                    "[lightAshura] Deny passthrough on world " + world.getName());
+                        }
 
-                if(chestAccessState.equalsIgnoreCase("deny")) {
-                    region.setFlag(Flags.CHEST_ACCESS, StateFlag.State.DENY);
-                }
+                        if(passthroughState.equalsIgnoreCase("allow")) {
+                            region.setFlag(Flags.PASSTHROUGH, StateFlag.State.ALLOW);
+                            Bukkit.getLogger().log(Level.INFO,
+                                    "[lightAshura] Allow passthrough on world " + world.getName());
+                        }
 
-                if(chestAccessState.equalsIgnoreCase("allow")) {
-                    region.setFlag(Flags.CHEST_ACCESS, StateFlag.State.ALLOW);
+                        if(interactState.equalsIgnoreCase("deny")) {
+                            region.setFlag(Flags.USE, StateFlag.State.DENY);
+                            Bukkit.getLogger().log(Level.INFO,
+                                    "[lightAshura] Deny use on world " + world.getName());
+                        }
+
+                        if(interactState.equalsIgnoreCase("allow")) {
+                            region.setFlag(Flags.USE, StateFlag.State.ALLOW);
+                            Bukkit.getLogger().log(Level.INFO,
+                                    "[lightAshura] Allow use on world " + world.getName());
+                        }
+
+                        if(chestAccessState.equalsIgnoreCase("deny")) {
+                            region.setFlag(Flags.CHEST_ACCESS, StateFlag.State.DENY);
+                            Bukkit.getLogger().log(Level.INFO,
+                                    "[lightAshura] Deny chestAccess on world " + world.getName());
+                        }
+
+                        if(chestAccessState.equalsIgnoreCase("allow")) {
+                            region.setFlag(Flags.CHEST_ACCESS, StateFlag.State.ALLOW);
+                            Bukkit.getLogger().log(Level.INFO,
+                                    "[lightAshura] Allow chestAccess on world " + world.getName());
+                        }
+                    }
                 }
             }
-        }
+        }.runTaskLaterAsynchronously(Ashura.getInstance, 10);
     }
 
     @EventHandler

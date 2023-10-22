@@ -45,7 +45,7 @@ public class ItemDrop implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreakEvent(EntityDeathEvent e) {
+    public void onEntityDeath(EntityDeathEvent e) {
 
         Entity entity = e.getEntity();
         Location entityLocation = e.getEntity().getLocation();

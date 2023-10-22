@@ -32,12 +32,8 @@ public class ReloadCommand extends SubCommand {
                 Ashura.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
                 return false;
             }
-
-            Ashura.boxes.reloadConfig("boxes.yml");
             Ashura.settings.reloadConfig("settings.yml");
             Ashura.messages.reloadConfig("messages.yml");
-            Ashura.trades.reloadConfig("trades.yml");
-            Ashura.border.reloadConfig("trades.yml");
 
             Ashura.util.sendMessage(player, "&7Configs wurden #dc143derfolgreich &7neu geladen.");
         }

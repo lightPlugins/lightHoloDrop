@@ -1,17 +1,9 @@
 package de.lightplugins.master;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.willfp.ecojobs.EcoJobsPlugin;
-import com.zaxxer.hikari.HikariDataSource;
 import de.lightplugins.commands.AshuraCommandManager;
-import de.lightplugins.commands.essentials.*;
 import de.lightplugins.commands.tabcompletion.AshuraTabCompletion;
-import de.lightplugins.database.DatabaseConnection;
-import de.lightplugins.events.BoxesOpener;
-import de.lightplugins.events.PlayerJoinMessageHandler;
 import de.lightplugins.itemdrop.ItemDrop;
-import de.lightplugins.events.WorldInit;
-import de.lightplugins.events.OnFirstJoin;
 import de.lightplugins.files.FileManager;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.Util;
@@ -27,9 +19,6 @@ import java.util.logging.Level;
 public class Ashura extends JavaPlugin {
 
     public static Ashura getInstance;
-
-    public HikariDataSource ds;
-    public DatabaseConnection hikari;
 
     public static FileManager settings;
     public static FileManager messages;
@@ -66,12 +55,6 @@ public class Ashura extends JavaPlugin {
 
     public void onEnable() {
 
-        /*  Initalize Database and connect driver  */
-
-        this.hikari = new DatabaseConnection();
-        // hikari.connectToDataBaseViaMariaDB();
-
-
         /*  SetUp WorldGuard */
 
         for(Plugin pluginName : Bukkit.getServer().getPluginManager().getPlugins()) {
@@ -83,20 +66,6 @@ public class Ashura extends JavaPlugin {
                     isWorldGuard = true;
                 }
             }
-
-            if (pluginName.getName().equals("EcoJobs")) {
-                Plugin newPlugin = this.getServer().getPluginManager().getPlugin("EcoJobs");
-                if (newPlugin instanceof EcoJobsPlugin) {
-                    getLogger().info("[lightAshura] Successfully hooked into EcoJobs");
-                    isEcoJobs = true;
-                }
-            }
-
-            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-                new PlaceholderAPI().register(); // initial lightEconomy placeholder
-                Bukkit.getLogger().log(Level.INFO, "[lightEconomy] Hooked into PlaceholderAPI");
-
-            }
         }
 
         /*######################################*/
@@ -106,22 +75,9 @@ public class Ashura extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("a")).setExecutor(new AshuraCommandManager(this));
         Objects.requireNonNull(this.getCommand("a")).setTabCompleter(new AshuraTabCompletion());
 
-        Objects.requireNonNull(this.getCommand("day")).setExecutor(new DayTimeCommand());
-        Objects.requireNonNull(this.getCommand("night")).setExecutor(new NightTimeCommand());
-        Objects.requireNonNull(this.getCommand("gmc")).setExecutor(new CreativeCommand());
-        Objects.requireNonNull(this.getCommand("gms")).setExecutor(new SurvivalCommand());
-        Objects.requireNonNull(this.getCommand("speed")).setExecutor(new SpeedCommand());
-        Objects.requireNonNull(this.getCommand("heal")).setExecutor(new HealCommand());
-        Objects.requireNonNull(this.getCommand("sun")).setExecutor(new SunCommand());
-
 
         PluginManager pm = Bukkit.getPluginManager();
-        //pm.registerEvents(new OnJoinCommands(), this);
-        pm.registerEvents(new OnFirstJoin(), this);
-        pm.registerEvents(new BoxesOpener(), this);
-        pm.registerEvents(new WorldInit(), this);
         pm.registerEvents(new ItemDrop(), this);
-        pm.registerEvents(new PlayerJoinMessageHandler(), this);
 
         borderMenuManager = new InventoryManager(this);
         borderMenuManager.init();

@@ -2,7 +2,7 @@
   <artifact type="jar" name="lightItemHolo:jar">
     <output-path>$USER_HOME$/Desktop/minecraft-server/plugins</output-path>
     <root id="archive" name="lightItemHolo.jar">
-      <element id="module-output" name="lightAshura" />
+      <element id="module-output" name="lightItemHolo" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/2.0.0-alpha1/slf4j-api-2.0.0-alpha1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar" path-in-jar="/" />
     </root>

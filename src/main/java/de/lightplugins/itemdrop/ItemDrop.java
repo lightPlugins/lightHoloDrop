@@ -21,10 +21,6 @@ public class ItemDrop implements Listener {
 
     private Map<UUID, BukkitRunnable> itemTimers = new HashMap<>();
 
-    private boolean checkWorld(String worldName, String configWorld) {
-        return worldName.equalsIgnoreCase(configWorld);
-    }
-
     @EventHandler
     public void onBlockBreakEvent(ItemSpawnEvent e) {
 
@@ -196,15 +192,12 @@ public class ItemDrop implements Listener {
                     if(enableDefaultColor) {
                         item.setGlowing(true);
                         ItemGlow.setGlowColor(defaultColor, item);
-                        Bukkit.getLogger().log(Level.WARNING, "TEST -1");
                         return;
                     }
                 }
 
                 for(String path : Objects.requireNonNull(settings.getConfigurationSection(
                         "settings.itemHolo.glow.customItems")).getKeys(false)) {
-
-                    Bukkit.getLogger().log(Level.WARNING, "TEST");
 
                     String defaultPath = "settings.itemHolo.glow.customItems." + path + ".";
                     String mode = settings.getString(defaultPath + "mode");
@@ -226,21 +219,14 @@ public class ItemDrop implements Listener {
                      */
 
                     if(mode.equalsIgnoreCase("vanilla")) {
-
-                        Bukkit.getLogger().log(Level.WARNING, "TEST 0");
                         ItemStack is = new ItemStack(Material.valueOf(data), 1);
 
                         if(is.getItemMeta() == null) {
-                            Bukkit.getLogger().log(Level.WARNING, "TEST 1");
                             return; // Maybe more debugging here -> wrong config format
                         }
 
-                        Bukkit.getLogger().log(Level.WARNING, "TEST: " + item.getItemStack().getType() + " " + is.getType());
-
                         if(item.getItemStack().getType().equals(is.getType())) {
-                            Bukkit.getLogger().log(Level.WARNING, "TEST 3");
                             item.setGlowing(true);
-                            Bukkit.getLogger().log(Level.WARNING, "TEST: " + color + " " + path );
                             ItemGlow.setGlowColor(color, item);
                             return;
                         }
@@ -254,8 +240,6 @@ public class ItemDrop implements Listener {
 
                     if(mode.equalsIgnoreCase("modeldata")) {
 
-                        Bukkit.getLogger().log(Level.WARNING, "TEST 4");
-
                         ItemStack is = new ItemStack(Material.valueOf(data), 1);
 
                         if(is.getItemMeta() == null) {
@@ -263,10 +247,6 @@ public class ItemDrop implements Listener {
                         }
 
                         if(!is.getItemMeta().hasCustomModelData()) {
-                            if(enableDefaultColor) {
-                                item.setGlowing(true);
-                                ItemGlow.setGlowColor(defaultColor, item);
-                            }
                             return; // Maybe more debugging here -> wrong config format
                         }
 
@@ -277,11 +257,13 @@ public class ItemDrop implements Listener {
                             item.setGlowing(true);
                             ItemGlow.setGlowColor(color, item);
 
+                            return;
+
                         }
                     }
                 }
+
                 if(enableDefaultColor) {
-                    Bukkit.getLogger().log(Level.WARNING, "TEST 2");
                     item.setGlowing(true);
                     ItemGlow.setGlowColor(defaultColor, item);
                 }
@@ -350,7 +332,6 @@ public class ItemDrop implements Listener {
             BukkitRunnable timerTask = itemTimers.get(itemUUID);
             timerTask.cancel();
             itemTimers.remove(itemUUID);
-            Bukkit.getLogger().log(Level.WARNING, "SIZE " + ItemGlow.teams.size());
         }
     }
 }

@@ -2,7 +2,7 @@ settings:
   itemHolo:
 #   The visual display name of the dropped item.
 #   Follow placeholders are available: #timer#, #amount#, #item#
-    displayName: '&8[&#dc143d#timer#&8] &f#amount# &7x&r #item#'
+    displayName: '&8[#dc143d#timer#&8] &f#amount# &7x&r #item#'
 #   How long should it take, if the dropped item get deleted ?
     timer: 60
 #   Spawn particle, if the dropped item gets deleted

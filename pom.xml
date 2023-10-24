@@ -21,11 +21,6 @@
         </repository>
 
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-
-        <repository>
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
@@ -53,6 +48,11 @@
         <repository>
             <id>teammt-plugins-public</id>
             <url>https://masecla.dev/nexus/repository/mt-plugins-public/</url>
+        </repository>
+
+        <repository>
+            <id>jitpack-repo</id>
+            <url>https://jitpack.io</url>
         </repository>
 
     </repositories>
@@ -115,6 +115,14 @@
             <artifactId>org.jetbrains.annotations</artifactId>
             <version>1.7.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.LoneDev6</groupId>
+            <artifactId>api-itemsadder</artifactId>
+            <version>3.6.1</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 

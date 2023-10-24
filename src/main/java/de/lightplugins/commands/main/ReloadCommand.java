@@ -1,6 +1,6 @@
 package de.lightplugins.commands.main;
 
-import de.lightplugins.master.Light;
+import de.lightplugins.master.ItemHolo;
 import de.lightplugins.util.SubCommand;
 import org.bukkit.entity.Player;
 
@@ -29,13 +29,13 @@ public class ReloadCommand extends SubCommand {
         if(args.length == 1) {
 
             if(!player.hasPermission("ashura.admin.command.reload")) {
-                Light.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
+                ItemHolo.util.sendMessage(player, "&cDu hast für diesen Befehl keine Berechtigung&7!");
                 return false;
             }
-            Light.settings.reloadConfig("settings.yml");
-            Light.messages.reloadConfig("messages.yml");
+            ItemHolo.settings.reloadConfig("settings.yml");
+            ItemHolo.messages.reloadConfig("messages.yml");
 
-            Light.util.sendMessage(player, "&7Configs wurden #dc143derfolgreich &7neu geladen.");
+            ItemHolo.util.sendMessage(player, "&7Configs wurden #dc143derfolgreich &7neu geladen.");
         }
 
         return false;

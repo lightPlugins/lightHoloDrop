@@ -1,6 +1,6 @@
 package de.lightplugins.files;
 
-import de.lightplugins.master.Light;
+import de.lightplugins.master.ItemHolo;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -19,12 +19,12 @@ public class FileManager {
      */
 
 
-    private final Light plugin;
+    private final ItemHolo plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
     private final String configName;
 
-    public FileManager(Light plugin, String configName) {
+    public FileManager(ItemHolo plugin, String configName) {
         this.plugin = plugin;
         this.configName = configName;
         saveDefaultConfig(configName);

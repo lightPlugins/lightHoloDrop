@@ -1,7 +1,9 @@
 package de.lightplugins.itemdrop;
 
-import de.lightplugins.master.Light;
+import com.willfp.eco.core.items.Items;
+import de.lightplugins.master.ItemHolo;
 import de.lightplugins.util.ItemGlow;
+import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
@@ -15,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-import java.util.logging.Level;
 
 public class ItemDrop implements Listener {
 
@@ -24,7 +25,7 @@ public class ItemDrop implements Listener {
     @EventHandler
     public void onBlockBreakEvent(ItemSpawnEvent e) {
 
-        FileConfiguration settings = Light.settings.getConfig();
+        FileConfiguration settings = ItemHolo.settings.getConfig();
 
         settings.getStringList("settings.itemHolo.whitelist.worlds").forEach(singleWorld -> {
             if(Objects.requireNonNull(settings.getString(
@@ -34,6 +35,7 @@ public class ItemDrop implements Listener {
 
 
                     Item item = e.getEntity();
+                    item.setPickupDelay(settings.getInt("settings.itemHolo.pickUpDelay"));
 
                     UUID itemUUID = item.getUniqueId();
                     ItemStack itemStack = item.getItemStack();
@@ -60,6 +62,8 @@ public class ItemDrop implements Listener {
 
                 Item item = e.getEntity();
 
+                item.setPickupDelay(settings.getInt("settings.itemHolo.pickUpDelay"));
+
                 UUID itemUUID = item.getUniqueId();
                 ItemStack itemStack = item.getItemStack();
 
@@ -77,7 +81,7 @@ public class ItemDrop implements Listener {
     @EventHandler
     public void onItemMerge(ItemMergeEvent e) {
 
-        FileConfiguration settings = Light.settings.getConfig();
+        FileConfiguration settings = ItemHolo.settings.getConfig();
 
         settings.getStringList("settings.itemHolo.whitelist.worlds").forEach(singleWorld -> {
 
@@ -102,6 +106,8 @@ public class ItemDrop implements Listener {
             Item item = e.getEntity();
             UUID itemUUID = item.getUniqueId();
 
+            item.setPickupDelay(settings.getInt("settings.itemHolo.pickUpDelay"));
+
             itemTimers.remove(itemUUID);
             startTimer(item);
 
@@ -110,7 +116,7 @@ public class ItemDrop implements Listener {
 
     private void startTimer(Item item) {
 
-        FileConfiguration settings = Light.settings.getConfig();
+        FileConfiguration settings = ItemHolo.settings.getConfig();
         int timer = settings.getInt("settings.itemHolo.timer");
         String displayName = settings.getString("settings.itemHolo.displayName");
         boolean enableDefaultColor = settings.getBoolean("settings.itemHolo.glow.enableByDefault");
@@ -166,7 +172,7 @@ public class ItemDrop implements Listener {
                     item.setCustomName(item.getName());
                 }
 
-                itemName = Light.colorTranslation.hexTranslation(finalDisplayName
+                itemName = ItemHolo.colorTranslation.hexTranslation(finalDisplayName
                         .replace("#timer#", String.valueOf(timerTicks))
                         .replace("#amount#", String.valueOf(stackAmount))
                         .replace("#item#", item.getName()));
@@ -177,7 +183,7 @@ public class ItemDrop implements Listener {
                     return;
                 }
                 if(item.getItemStack().getItemMeta().hasDisplayName()) {
-                    itemName = Light.colorTranslation.hexTranslation(finalDisplayName
+                    itemName = ItemHolo.colorTranslation.hexTranslation(finalDisplayName
                             .replace("#timer#", String.valueOf(timerTicks))
                             .replace("#amount#", String.valueOf(stackAmount))
                             .replace("#item#", item.getItemStack().getItemMeta().getDisplayName()));
@@ -261,6 +267,104 @@ public class ItemDrop implements Listener {
 
                         }
                     }
+
+                    /*
+                     *
+                     *  ECOITEMS MODE
+                     *
+                     */
+
+                    if(mode.equalsIgnoreCase("ecoitems") && ItemHolo.getInstance.isEco) {
+
+                        String finalData = "ecoitems:" + data;
+
+                        ItemStack is = Items.lookup(finalData).getItem();
+
+                        if(is.getItemMeta() == null) {
+                            return; // Maybe more debugging here -> wrong config format
+                        }
+
+                        if(!is.getItemMeta().hasCustomModelData()) {
+                            return; // Maybe more debugging here -> wrong config format
+                        }
+
+                        int customModelData = is.getItemMeta().getCustomModelData();
+                        int modelDataConfig = Integer.parseInt(data);
+
+                        if(customModelData == modelDataConfig) {
+                            item.setGlowing(true);
+                            ItemGlow.setGlowColor(color, item);
+
+                            return;
+
+                        }
+                    }
+
+                    /*
+                     *
+                     *  ECOARMOR MODE
+                     *
+                     */
+
+                    if(mode.equalsIgnoreCase("ecoarmor") && ItemHolo.getInstance.isEco) {
+
+                        String finalData = "ecoarmor:" + data;
+
+                        ItemStack is = Items.lookup(finalData).getItem();
+
+                        if(is.getItemMeta() == null) {
+                            return; // Maybe more debugging here -> wrong config format
+                        }
+
+                        if(!is.getItemMeta().hasCustomModelData()) {
+                            return; // Maybe more debugging here -> wrong config format
+                        }
+
+                        int customModelData = is.getItemMeta().getCustomModelData();
+                        int modelDataConfig = Integer.parseInt(data);
+
+                        if(customModelData == modelDataConfig) {
+                            item.setGlowing(true);
+                            ItemGlow.setGlowColor(color, item);
+
+                            return;
+
+                        }
+                    }
+
+                    /*
+                     *
+                     *  ITEMSADDER MODE
+                     *
+                     */
+
+                    if(mode.equalsIgnoreCase("itemsadder") && ItemHolo.getInstance.isItemsAdder) {
+
+                        CustomStack customStack = CustomStack.getInstance(data);
+
+                        if(customStack != null) {
+                            ItemStack is = customStack.getItemStack();
+
+                            if(is.getItemMeta() == null) {
+                                return; // Maybe more debugging here -> wrong config format
+                            }
+
+                            if(!is.getItemMeta().hasCustomModelData()) {
+                                return; // Maybe more debugging here -> wrong config format
+                            }
+
+                            int customModelData = is.getItemMeta().getCustomModelData();
+                            int modelDataConfig = Integer.parseInt(data);
+
+                            if(customModelData == modelDataConfig) {
+                                item.setGlowing(true);
+                                ItemGlow.setGlowColor(color, item);
+
+                                return;
+
+                            }
+                        }
+                    }
                 }
 
                 if(enableDefaultColor) {
@@ -271,14 +375,14 @@ public class ItemDrop implements Listener {
         };
 
         itemTimers.put(itemUUID, timerTask);
-        timerTask.runTaskTimer(Light.getInstance, 0, 20);
+        timerTask.runTaskTimer(ItemHolo.getInstance, 0, 20);
     }
 
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
 
-        FileConfiguration settings = Light.settings.getConfig();
+        FileConfiguration settings = ItemHolo.settings.getConfig();
 
         settings.getStringList("settings.itemHolo.whitelist.worlds").forEach(singleWorld -> {
 
@@ -286,6 +390,7 @@ public class ItemDrop implements Listener {
                     "settings.itemHolo.whitelist.mode")).equalsIgnoreCase("whitelist")) {
 
                 Item item = e.getItemDrop();
+                item.setPickupDelay(settings.getInt("settings.itemHolo.pickUpDelay"));
                 UUID itemUUID = item.getUniqueId();
                 ItemStack itemStack = item.getItemStack();
 

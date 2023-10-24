@@ -5,6 +5,7 @@ settings:
     displayName: '&8[#dc143d#timer#&8] &f#amount# &7x&r #item#'
 #   How long should it take, if the dropped item get deleted ?
     timer: 60
+    pickUpDelay: 20
 #   Spawn particle, if the dropped item gets deleted
     particle:
       enable: true
@@ -83,11 +84,11 @@ settings:
           mode: vanilla
           data: 'RAW_COPPER'
           color: DARK_GRAY
-        [5]:
+        [6]:
           mode: vanilla
           data: 'LAPIS_LAZULI'
           color: BLUE
-        [5]:
+        [7]:
           mode: vanilla
           data: 'REDSTONE'
           color: RED

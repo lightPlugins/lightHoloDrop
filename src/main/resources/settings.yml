@@ -1,20 +1,18 @@
 settings:
   itemHolo:
-#   The visual display name of the dropped item.
-#   Follow placeholders are available: #timer#, #amount#, #item#
+    # The visual display name of the dropped item.
+    # Available placeholders: #timer#, #amount#, #item#
     displayName: '&8[#dc143d#timer#&8] &f#amount# &7x&r #item#'
-#   How long should it take, if the dropped item get deleted ?
+    # How long should it take for the dropped item to get deleted?
     timer: 60
     pickUpDelay: 20
-#   Spawn particle, if the dropped item gets deleted
+    # Spawn particles if the dropped item gets deleted.
     particle:
       enable: true
       type: LAVA
       amount: 30
-#   Specified in which world should drop items become visual display names
-#   There are two modes available:
-#     - whitelist -> only in these worlds become dropped items visual names.
-#     - blacklist -> exclude these worlds from become dropped items visual names.
+    # Specify in which worlds dropped items should become visual display names.
+    # Two modes available: whitelist (only in these worlds) and blacklist (exclude these worlds).
     whitelist:
       mode: whitelist
       worlds:
@@ -22,43 +20,42 @@ settings:
         - 'world_nether'
         - 'world_end'
     glow:
-#     Here you can define specified colors to custom Items.
-#     You can use follow modes: vanilla, custommodeldata, itemsadder, ecoitems, ecoarmor
-#     You can use follow colors: BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY,
-#                                DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE
-#
-#     Minecraft Formatting -> https://minecraft.fandom.com/wiki/Formatting_codes
-#     Example for Vanilla Items:
-#        [0]:
-#          mode: vanilla
-#          data: 'REDSTONE'
-#          color: RED
-#     Example for CustomModelData:
-#        [0]:
-#          mode: modeldata
-#          data: '15544'
-#          color: RED
-#     Example for ItemsAdder:
-#        [0]:
-#          mode: itemsadder
-#          data: 'amber_ore'
-#          color: RED
-#     Example for ecoitems:
-#        [0]:
-#          mode: ecoitems
-#          data: 'test_item'
-#          color: RED
-#     Example for ecoarmor:
-#        [0]:
-#          mode: ecoarmor
-#          data: 'category:test_chestplate'
-#          color: RED
-#
-#     Enable the default color for all dropped items. If it false, only the customItems below will glow
+      # Define specified colors for custom items.
+      # Modes: vanilla, custommodeldata, itemsadder, ecoitems, ecoarmor
+      # Colors: BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY,
+      #         DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE
+      # Minecraft Formatting: https://minecraft.fandom.com/wiki/Formatting_codes
+      # Example for Vanilla Items:
+      # [0]:
+      #   mode: vanilla
+      #   data: 'REDSTONE' (Remember to write vanilla items in uppercase!)
+      #   color: RED
+      # Example for CustomModelData:
+      # [0]:
+      #   mode: modeldata
+      #   data: '15544'
+      #   color: RED
+      # Example for ItemsAdder:
+      # [0]:
+      #   mode: itemsadder
+      #   data: 'amber_ore'
+      #   color: RED
+      # Example for ecoitems:
+      # [0]:
+      #   mode: ecoitems
+      #   data: 'test_item'
+      #   color: RED
+      # Example for ecoarmor:
+      # [0]:
+      #   mode: ecoarmor
+      #   data: 'category:test_chestplate'
+      #   color: RED
+
+      # Enable the default color for all dropped items. If false, only customItems below will glow.
       enableByDefault: true
-#     The default color of all dropped Items
+      # The default color of all dropped items.
       defaultColor: GRAY
-#     The fun part begins here. Define your own items.
+      # Define your own items here.
       customItems:
         [0]:
           mode: vanilla
@@ -75,15 +72,15 @@ settings:
         [3]:
           mode: vanilla
           data: 'RAW_IRON'
-          color: GRAY
+          color: WHITE
         [4]:
           mode: vanilla
           data: 'COAL'
-          color: BLACK
+          color: DARK_GRAY
         [5]:
           mode: vanilla
           data: 'RAW_COPPER'
-          color: DARK_GRAY
+          color: YELLOW
         [6]:
           mode: vanilla
           data: 'LAPIS_LAZULI'

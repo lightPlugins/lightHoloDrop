@@ -30,7 +30,6 @@ public class ItemHolo extends JavaPlugin {
     public static Util util;
     public Boolean isEco = false;
     public Boolean isItemsAdder = false;
-
     public Boolean isOraxen = false;
 
     public static InventoryManager borderMenuManager;
@@ -69,14 +68,6 @@ public class ItemHolo extends JavaPlugin {
                 Plugin newPlugin = this.getServer().getPluginManager().getPlugin("ItemsAdder");
                 if (newPlugin instanceof ItemsAdder) {
                     getLogger().info("[lightItemHolo] Successfully hooked into ItemsAdder");
-                    isItemsAdder = true;
-                }
-            }
-
-            if (pluginName.getName().equals("Oraxen")) {
-                Plugin newPlugin = this.getServer().getPluginManager().getPlugin("Oraxen");
-                if (newPlugin instanceof ItemsAdder) {
-                    getLogger().info("[lightItemHolo] Successfully hooked into Oraxen");
                     isItemsAdder = true;
                 }
             }

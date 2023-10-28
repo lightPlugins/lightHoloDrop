@@ -2,7 +2,7 @@ name: lightItemHolo
 author: lightPlugins
 description: Give dropped Items visual names and color
 version: 1.0.0
-main: de.lightplugins.master.Light
+main: de.lightplugins.master.ItemHolo
 api-version: 1.20
 softdepend: [PlaceholderAPI, EcoItems, WorldGuard, Eco, eco]
 commands:

@@ -13,7 +13,9 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -142,6 +144,12 @@ public class ItemDrop implements Listener {
                 timerTicks--;
 
                 int stackAmount = item.getItemStack().getAmount();
+
+                if(timer >= (timerTicks)) {
+                    Location itemLocation = item.getLocation();
+
+                    Objects.requireNonNull(itemLocation.getWorld()).spawnParticle(Particle.SPELL_INSTANT, itemLocation, 10);
+                }
 
                 if(timerTicks <= 0) {
 

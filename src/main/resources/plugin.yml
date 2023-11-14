@@ -1,10 +1,10 @@
-name: lightItemHolo
+name: lightHolo
 author: lightPlugins
 description: Give dropped Items visual names and color
 version: 1.0.0
 main: de.lightplugins.master.ItemHolo
-api-version: 1.20
-softdepend: [PlaceholderAPI, EcoItems, WorldGuard, Eco, eco]
+api-version: 1.13
+softdepend: [PlaceholderAPI, EcoItems, ItemsAdder, Eco, eco]
 commands:
   lholo:
     description: The master command argument

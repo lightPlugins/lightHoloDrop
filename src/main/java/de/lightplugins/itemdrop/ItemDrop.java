@@ -13,16 +13,39 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
+/*
+ * ----------------------------------------------------------------------------
+ *  This software and its source code, including text, graphics, and images,
+ *  are the sole property of lightPlugins ("Author").
+ *
+ *  Unauthorized reproduction or distribution of this software, or any portion
+ *  of it, may result in severe civil and criminal penalties, and will be
+ *  prosecuted to the maximum extent possible under the law.
+ * ----------------------------------------------------------------------------
+ */
+
+/**
+ * This software is developed and maintained by lightPlugins.
+ * For inquiries, please contact @discord: .light4coding.
+ *
+ * @version 1.0
+ * @since 2023-11-14
+ */
+
 public class ItemDrop implements Listener {
 
     private Map<UUID, BukkitRunnable> itemTimers = new HashMap<>();
+
+    /**
+     * Handles the item spawn event, applying specified settings based on world whitelist/blacklist.
+     *
+     * @param e The ItemSpawnEvent
+     */
 
     @EventHandler
     public void onBlockBreakEvent(ItemSpawnEvent e) {
@@ -80,6 +103,12 @@ public class ItemDrop implements Listener {
         });
     }
 
+    /**
+     * Handles the item merge event, updating timers for whitelisted worlds.
+     *
+     * @param e The ItemMergeEvent
+     */
+
     @EventHandler
     public void onItemMerge(ItemMergeEvent e) {
 
@@ -116,6 +145,12 @@ public class ItemDrop implements Listener {
         });
     }
 
+    /**
+     * Starts a timer for the specified item, applying visual effects based on configured settings.
+     *
+     * @param item The item to start the timer for
+     */
+
     private void startTimer(Item item) {
 
         FileConfiguration settings = ItemHolo.settings.getConfig();
@@ -124,11 +159,14 @@ public class ItemDrop implements Listener {
         boolean enableDefaultColor = settings.getBoolean("settings.itemHolo.glow.enableByDefault");
         ChatColor defaultColor = ChatColor.valueOf(settings.getString("settings.itemHolo.glow.defaultColor"));
         Particle particle = Particle.valueOf(settings.getString("settings.itemHolo.particle.type"));
+        Particle moveParticle = Particle.valueOf(settings.getString("settings.itemHolo.moveParticle.type"));
         boolean enableParticle = settings.getBoolean("settings.itemHolo.particle.enable");
+        boolean enableMoveParticle = settings.getBoolean("settings.itemHolo.moveParticle.enable");
         int particleAmount = settings.getInt("settings.itemHolo.particle.amount");
+        int moveParticleAmount = settings.getInt("settings.itemHolo.moveParticle.amount");
 
         if(displayName == null) {
-            displayName = "Error in Settings.yml";
+            displayName = "Error in settings.yml";
         }
 
         UUID itemUUID = item.getUniqueId();
@@ -145,10 +183,17 @@ public class ItemDrop implements Listener {
 
                 int stackAmount = item.getItemStack().getAmount();
 
-                if(timer >= (timerTicks)) {
-                    Location itemLocation = item.getLocation();
+                /*
+                 *      Spawn constant particles on the items location
+                 */
 
-                    Objects.requireNonNull(itemLocation.getWorld()).spawnParticle(Particle.SPELL_INSTANT, itemLocation, 10);
+                if(timer >= (timerTicks)) {
+                    if(enableMoveParticle) {
+                        Location itemLocation = item.getLocation();
+
+                        Objects.requireNonNull(itemLocation.getWorld()).spawnParticle(
+                                moveParticle, itemLocation, moveParticleAmount);
+                    }
                 }
 
                 if(timerTicks <= 0) {
@@ -264,15 +309,17 @@ public class ItemDrop implements Listener {
                             return; // Maybe more debugging here -> wrong config format
                         }
 
-                        int customModelData = is.getItemMeta().getCustomModelData();
-                        int modelDataConfig = Integer.parseInt(data);
+                        if(item.getItemStack().getItemMeta().hasCustomModelData()) {
+                            int customModelData = is.getItemMeta().getCustomModelData();
+                            int modelDataConfig = Integer.parseInt(data);
 
-                        if(customModelData == modelDataConfig) {
-                            item.setGlowing(true);
-                            ItemGlow.setGlowColor(color, item);
+                            if(customModelData == modelDataConfig) {
+                                item.setGlowing(true);
+                                ItemGlow.setGlowColor(color, item);
 
-                            return;
+                                return;
 
+                            }
                         }
                     }
 
@@ -296,15 +343,17 @@ public class ItemDrop implements Listener {
                             return; // Maybe more debugging here -> wrong config format
                         }
 
-                        int customModelData = is.getItemMeta().getCustomModelData();
-                        int modelDataConfig = Integer.parseInt(data);
+                        if(item.getItemStack().getItemMeta().hasCustomModelData()) {
+                            int customModelData = is.getItemMeta().getCustomModelData();
+                            int modelDataConfig = item.getItemStack().getItemMeta().getCustomModelData();
 
-                        if(customModelData == modelDataConfig) {
-                            item.setGlowing(true);
-                            ItemGlow.setGlowColor(color, item);
+                            if(customModelData == modelDataConfig) {
+                                item.setGlowing(true);
+                                ItemGlow.setGlowColor(color, item);
 
-                            return;
+                                return;
 
+                            }
                         }
                     }
 
@@ -328,15 +377,17 @@ public class ItemDrop implements Listener {
                             return; // Maybe more debugging here -> wrong config format
                         }
 
-                        int customModelData = is.getItemMeta().getCustomModelData();
-                        int modelDataConfig = Integer.parseInt(data);
+                        if(item.getItemStack().getItemMeta().hasCustomModelData()) {
+                            int customModelData = is.getItemMeta().getCustomModelData();
+                            int modelDataConfig = item.getItemStack().getItemMeta().getCustomModelData();
 
-                        if(customModelData == modelDataConfig) {
-                            item.setGlowing(true);
-                            ItemGlow.setGlowColor(color, item);
+                            if(customModelData == modelDataConfig) {
+                                item.setGlowing(true);
+                                ItemGlow.setGlowColor(color, item);
 
-                            return;
+                                return;
 
+                            }
                         }
                     }
 
@@ -361,15 +412,17 @@ public class ItemDrop implements Listener {
                                 return; // Maybe more debugging here -> wrong config format
                             }
 
-                            int customModelData = is.getItemMeta().getCustomModelData();
-                            int modelDataConfig = Integer.parseInt(data);
+                            if(item.getItemStack().getItemMeta().hasCustomModelData()) {
+                                int customModelData = is.getItemMeta().getCustomModelData();
+                                int modelDataConfig = item.getItemStack().getItemMeta().getCustomModelData();
 
-                            if(customModelData == modelDataConfig) {
-                                item.setGlowing(true);
-                                ItemGlow.setGlowColor(color, item);
+                                if(customModelData == modelDataConfig) {
+                                    item.setGlowing(true);
+                                    ItemGlow.setGlowColor(color, item);
 
-                                return;
+                                    return;
 
+                                }
                             }
                         }
                     }
@@ -386,6 +439,11 @@ public class ItemDrop implements Listener {
         timerTask.runTaskTimer(ItemHolo.getInstance, 0, 20);
     }
 
+    /**
+     * Handles the item drop event, applying settings based on world whitelist/blacklist.
+     *
+     * @param e The PlayerDropItemEvent
+     */
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
@@ -433,6 +491,11 @@ public class ItemDrop implements Listener {
     }
 
 
+    /**
+     * Handles the item pickup event, cancelling timers for picked up items.
+     *
+     * @param e The EntityPickupItemEvent
+     */
 
     @EventHandler
     public void onItemPickUp(EntityPickupItemEvent e) {

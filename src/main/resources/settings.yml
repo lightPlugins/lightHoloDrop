@@ -6,6 +6,11 @@ settings:
     # How long should it take for the dropped item to get deleted?
     timer: 60
     pickUpDelay: 20
+    # Spawn constant particles on dropped items.
+    moveParticle:
+      enable: true
+      type: SPELL_INSTANT
+      amount: 10
     # Spawn particles if the dropped item gets deleted.
     particle:
       enable: true

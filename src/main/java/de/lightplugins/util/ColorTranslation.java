@@ -6,6 +6,25 @@ import org.bukkit.Bukkit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+ * ----------------------------------------------------------------------------
+ *  This software and its source code, including text, graphics, and images,
+ *  are the sole property of lightPlugins ("Author").
+ *
+ *  Unauthorized reproduction or distribution of this software, or any portion
+ *  of it, may result in severe civil and criminal penalties, and will be
+ *  prosecuted to the maximum extent possible under the law.
+ * ----------------------------------------------------------------------------
+ */
+
+/**
+ * This software is developed and maintained by lightPlugins.
+ * For inquiries, please contact @discord: .light4coding.
+ *
+ * @version 1.0
+ * @since 2023-11-14
+ */
+
 public class ColorTranslation {
 
     private final Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
